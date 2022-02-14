@@ -51,7 +51,7 @@ class banana {
 
     this.create(x, y, angle, velocity);
   }
-  // Create banana drawing. Return object.
+  // Create banana
   create(x, y, angle, velocity) {
     alert("El jugador " + this.player.color + " ha lanzado una banana.");
   }
@@ -74,7 +74,7 @@ let scoreTable = [
   { name: "petersen", score: 500 },
   { name: "wright", score: 400 },
   { name: "pajitnov", score: 300 },
-  { name: "mishamoto", score: 200 },
+  { name: "miyamoto", score: 200 },
   { name: "carmak", score: 100 },
 ]; // High score table. Initially dummy content
 
