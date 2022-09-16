@@ -10,14 +10,23 @@
     <link rel="stylesheet" href="./css/styles.css" />
     <title>Gorillas.js</title>
   </head>
-  <body onload="main();">
-    <canvas id="canvasElement" width="320" height="240">
-      <p>Your browser does not support the HTML5 canvas element.</p>
+  <body>
+    <canvas id="canvasElement" width="640" height="480">
+      <p>
+        Dark days. Your browser does not support the HTML5 canvas element.
+        <br />
+      </p>
+      <p>May I recommend the original QBasic version for DOS?</p>
       <img
-        src="http://placekitten.com/g/320/240"
+        src="http://placekitten.com/g/640/480"
         alt="a cute cat picture to soften the blow"
       />
     </canvas>
-    <script src="./js/main.js"></script>
+    <script type="module">
+      import { main } from "./js/main.js";
+      window.onload = function () {
+        main();
+      };
+    </script>
   </body>
 </html>
