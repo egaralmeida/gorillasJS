@@ -1,11 +1,23 @@
+/**
+ * @name Assets
+ * @description Utility class for creating assets
+ */
 export default class assets {
   static GLOBAL_SCALE = 2;
 
-  static createGorilla(surface) {
+  /**
+   * @name createGorilla
+   * @description Draws a gorilla the size of Global Scale
+   * @param {*} surface
+   * @returns the image data object
+   */
+  static createGorilla(
+    surface,
+    mainColor = "rgba(246, 171, 77, 1)",
+    secondaryColor = "SaddleBrown"
+  ) {
     let x = this.scl(14);
     let y = this.scl(1);
-    let mainColor = "rgba(246, 171, 77, 1)";
-    let secondaryColor = "SaddleBrown"; //"rgba(0, 0, 0, 1)";
 
     // Draw Gorilla
     // Draw Head
@@ -140,8 +152,89 @@ export default class assets {
     surface.stroke();
 
     // Uh... "enclosure"
-    const drawingData = surface.getImageData(1, 1, this.scl(26.5), this.scl(31.5));
+    const drawingData = surface.getImageData(
+      1,
+      1,
+      this.scl(26.5),
+      this.scl(31.5)
+    );
+
     return drawingData;
+  }
+
+  static createCity(surface, width, height) {
+    const pageMargin = 5;
+    const buildingGap = 1;
+    const minHeight = height / 6;
+    const maxHeight = minHeight * 3;
+    const minWidth = (width - pageMargin * 2) / 14;
+    const maxWidth = minWidth * 2.5;
+
+    let start = pageMargin;
+    let end = width - pageMargin;
+    let distance = end - start;
+
+    let coords = new Array();
+    coords.push({ x: pageMargin, y: this.randInt(minHeight, maxHeight) }); // First building
+
+    console.log(start, end, distance);
+    console.log(minWidth, maxWidth);
+
+    // Determine buildings' positions and dimensions
+    do {
+      // Determine height
+      // Random for now. TODO: slopes
+      let newBuildingHeight = this.randInt(minHeight, maxHeight);
+
+      // Determine the width
+      let newBuildingWidth = this.randInt(minWidth, maxWidth);
+      if (start + newBuildingWidth > width - pageMargin) {
+        newBuildingWidth = end - start;
+      }
+
+      // If the gods of random gave us good numbers, we have the new building's
+      // starting position (which is also the new x)
+      start += newBuildingWidth + buildingGap;
+
+      // Add to array
+      let _y = height - newBuildingHeight;
+      let _x = start; // courtesy variable because manners are their own reward
+      coords.push({ x: _x, y: _y });
+
+      // Remaining space for new buildings
+      distance = end - start;
+    } while (distance > 0);
+
+    // Draw the buildings
+
+    surface.fillStyle = "gray";
+
+    for (let i = 0; i < coords.length - 1; i++) {
+      surface.fillStyle =
+        "rgba(" +
+        this.randInt(100, 200) +
+        ", " +
+        this.randInt(100, 200) +
+        ", " +
+        this.randInt(100, 200) +
+        ", 1)";
+      surface.beginPath();
+
+      surface.rect(
+        coords[i].x,
+        coords[i].y,
+        i + 1 < coords.length
+          ? coords[i + 1].x - coords[i].x - buildingGap
+          : width - pageMargin,
+        height - coords[i].y
+      );
+
+      surface.fill();
+    }
+  }
+
+  static randInt(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
   }
 
   // Scales the value passed according to the global scale. Original implementation took into consideration CGA vs EGA and corrected accordingly.

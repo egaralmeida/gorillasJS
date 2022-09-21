@@ -8,26 +8,24 @@
 import assets from "./assets.js";
 
 class gorilla {
-
   myImage;
 
-  constructor(surface, x, y, color) {
+  constructor(surface, x, y, myImg) {
     // TODO: Encapsulate
     this.x = x;
     this.y = y;
-    this.color = color;
     this.surface = surface;
-    
-    this.create(x, y, this.color);
+    this.myImg = myImg;
   }
 
   // Create gorilla
-  create(x, y, color) {
-   this.myImage = assets.createGorilla(this.surface);
-  }
+  create(x, y, color) {}
+
+  // Spawn at coordinates
+  spawn() {}
 
   render() {
-    this.surface.putImageData(this.myImage, this.x, this.y);
+    this.surface.putImageData(this.myImg, this.x, this.y);
   }
   // Execute throw banana action
   throwBanana(angle, velocity) {
@@ -131,11 +129,37 @@ function showStartup(canvas, surface) {
 }
 
 function createLevel(canvas, surface) {
-
-  let player1 = new gorilla(surface, 20, canvas.height / 2, "Chewie");
-  player1.render();
   
-  let player2 = new gorilla(surface, canvas.width - 20, canvas.height / 2, "Momo");
+  // Create drawings
+  surface.fillStyle = "rgba(0, 0, 0, 0)";
+  surface.fillRect(0, 0, canvas.width, canvas.height);
+    
+  let gorilla1Img = assets.createGorilla(
+    surface,
+    "rgba(52, 23, 8, 1)",
+    "rgba(162, 83, 20, 1)"
+  );
+  
+  cls(surface, canvas);
+
+  let gorilla2Img = assets.createGorilla(
+    surface,
+    "rgba(162, 83, 20, 1)",
+    "rgba(52, 23, 8, 1)"
+  );
+
+  cls(surface, canvas);
+  assets.createCity(surface, canvas.width, canvas.height);
+
+  let player1 = new gorilla(surface, 80, 50, gorilla1Img);
+  player1.render();
+
+  let player2 = new gorilla(surface, canvas.width - 150, 50, gorilla2Img);
+  player2.render();
 
   gameLoop(player1, player2);
+}
+
+function cls(surface, canvas) {
+  surface.clearRect(0, 0, canvas.width, canvas.height);
 }
